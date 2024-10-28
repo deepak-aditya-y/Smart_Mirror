@@ -24,6 +24,17 @@ def talk(text):
     engine.say(text)
     engine.runAndWait()
 
+def read_contacts(filename='contacts.txt'):
+    """Read contacts from a file and return as a dictionary."""
+    contacts = {}
+    with open(filename, 'r') as file:
+        for line in file:
+            name, number = line.strip().split(',')
+            contacts[name.strip().title()] = number.strip()
+    return contacts
+
+contacts = read_contacts()  # Load contacts
+
 def listen_for_hotword():
     """Waits until it hears 'Jarvis'."""
     while True:
@@ -62,6 +73,21 @@ def take_command():
     except Exception as e:
         print(f"Error: {e}")
         return ""
+
+def ask_for_contact():
+    """Ask the user for a valid contact up to 5 times."""
+    attempts = 5
+    available_contacts = ', '.join(contacts.keys())
+
+    for _ in range(attempts):
+        talk(f"Available contacts are: {available_contacts}. Who would you like to message?")
+        recipient_name = take_command().strip().title()
+
+        if recipient_name in contacts:
+            return recipient_name  # Valid contact found
+
+    talk("Sorry, I couldn't find a valid contact. Please try again later.")
+    return None  # Return None if no valid contact after 5 attempts
 
 def run_jarvis():
     """Process commands after hotword activation."""
@@ -113,6 +139,35 @@ def run_jarvis():
     elif 'weather' in command:
         weather_info = get_weather(CITY, API_KEY)
         talk(f"The current weather in {CITY} is: {weather_info}")
+
+    elif 'message' in command:  # WhatsApp messaging with confirmation and retries
+        talk("To whom would you like to send a message?")
+        recipient_name = take_command().strip().title()
+
+        # Check if the contact is available, if not, ask up to 5 times.
+        if recipient_name not in contacts:
+            recipient_name = ask_for_contact()
+
+        if recipient_name:
+            recipient_number = contacts[recipient_name]
+
+            while True:
+                talk("What message would you like to send?")
+                message = take_command()
+                talk(f"You said: {message}. Is that correct?")
+                confirmation = take_command().strip().lower()
+
+                if 'yes' in confirmation:
+                    pywhatkit.sendwhatmsg_instantly(f"+{recipient_number}", message)
+                    talk(f"Message sent to {recipient_name}.")
+                    break
+                elif 'no' in confirmation:
+                    talk("Okay, please say the message again.")
+                else:
+                    talk("Sorry, I didn't understand. Please confirm again.")
+
+        else:
+            talk("Exiting message sending. No valid contact found.")
 
     else:
         talk("I'm not sure about that. Please try again.")
