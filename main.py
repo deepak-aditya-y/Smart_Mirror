@@ -1,24 +1,24 @@
+import speech_recognition as sr
 import tkinter as tk
 from tkinter import messagebox
 import threading
-import speech_recognition as sr
 import pyttsx3
 import pywhatkit
 import time
 import wikipedia
-from Weather import *
-from Emotion_Detection import emotion_detection
-from Schedule import *
+import datetime  # Importing datetime module to get current time and date
+from Weather import *  # Ensure this is defined correctly
+from Emotion_Detection import emotion_detection  # Import the updated emotion detection function
+from Schedule import *  # Ensure this is defined correctly
 
 API_KEY = read_api_key('Security/Weater_API_Key.txt')  # Update the path if necessary
 CITY = "Bangalore"
 
-# Initialize recognizer and text-to-speech engine
-listener = sr.Recognizer()
+# Initialize pyttsx3 engine
 engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[0].id)  # Male voice
-last_activity_time = time.time()
+
+# Initialize speech recognizer
+listener = sr.Recognizer()
 
 # GUI Functions
 def talk(text):
@@ -116,7 +116,8 @@ def run_jarvis():
 
     elif 'emotion detection' in command:  # Run Emotion Detection
         talk("Starting emotion detection.")
-        emotion_detection(talk)  # Call the emotion detection function
+        # Start emotion detection in a separate thread to avoid blocking the main UI
+        threading.Thread(target=emotion_detection, daemon=True).start()
 
     elif 'who is' in command:  # Search in Wikipedia
         person = command.replace('who is', '').strip()

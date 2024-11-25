@@ -1,0 +1,11 @@
+tkinter
+SpeechRecognition
+pyttsx3
+pywhatkit
+wikipedia
+requests
+google-auth
+google-auth-oauthlib
+google-api-python-client
+opencv-python
+fer
