@@ -6,7 +6,6 @@ import pyttsx3
 import pywhatkit
 import time
 import wikipedia
-import datetime  # Importing datetime module to get current time and date
 from Weather import *  # Ensure this is defined correctly
 from Emotion_Detection import emotion_detection  # Import the updated emotion detection function
 from Schedule import *  # Ensure this is defined correctly
