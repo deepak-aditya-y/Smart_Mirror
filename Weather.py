@@ -71,7 +71,6 @@ def recommend_outfit(weather):
         outfit.append("Opt for breathable fabrics to stay comfortable in the humid air.")
         outfit.append("Consider wearing sunglasses to reduce glare and protect your eyes from haze.")
         outfit.append("A face mask or scarf can be helpful to protect your respiratory system from dust.")
-        outfit.append("Wear shoes with closed toes to avoid dust or dirt accumulation on your feet.")
 
     if wind_speed > 15:
         outfit.append("Add a wind-resistant jacket")

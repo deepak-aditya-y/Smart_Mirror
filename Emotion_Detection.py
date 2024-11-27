@@ -17,6 +17,17 @@ def talk(text):
     # Run speak function in a separate thread to prevent blocking the main thread
     threading.Thread(target=speak, daemon=True).start()
 
+# Emotion comments dictionary
+emotion_comments = {
+    "happy": "Keep smiling! It brightens up your day.",
+    "sad": "It's okay to feel down sometimes. Things will get better.",
+    "angry": "Take a deep breath. Calmness is key.",
+    "surprise": "Wow! Something caught you off guard?",
+    "disgust": "Not a fan of that, huh?",
+    "fear": "Everything's fine. Stay strong!",
+    "neutral": "Looking composed and steady."
+}
+
 def emotion_detection():
     # Initialize the emotion detector
     detector = FER()
@@ -43,26 +54,25 @@ def emotion_detection():
 
         for analysis in emotion_analysis:
             # Get bounding box and emotions
-            x, y, w, h = analysis['box']
             emotions = analysis['emotions']
 
             # Get the dominant emotion
             dominant_emotion = max(emotions, key=emotions.get)
 
-            # Print to check detected emotion
-            print(f"Detected emotion: {dominant_emotion}")
-            talk(dominant_emotion)  # Use the talk function to speak the emotion
+            # Add a comment based on the detected emotion
+            comment = emotion_comments.get(dominant_emotion, "Emotion detected!")
 
-            # Announce the detected emotion every 15 seconds
+            # Announce the detected emotion and comment every 15 seconds
             current_time = time.time()
             if current_time - last_emotion_time >= 15:
-                talk(dominant_emotion)  # Use the talk function to provide a response
+                talk(comment)  # Speak the associated comment
                 last_emotion_time = current_time
 
-        # Display the resulting frame with bounding boxes
+        # Display the resulting frame with bounding boxes and comments
         for analysis in emotion_analysis:
             x, y, w, h = analysis['box']
             dominant_emotion = max(analysis['emotions'], key=analysis['emotions'].get)
+            comment = emotion_comments.get(dominant_emotion, "")
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.putText(frame, dominant_emotion, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
@@ -78,3 +88,4 @@ def emotion_detection():
     cv2.destroyAllWindows()
 
 # Call the emotion_detection function when needed, e.g., via a button press or command.
+emotion_detection()
