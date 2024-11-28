@@ -142,8 +142,7 @@ def run_jarvis():
         if isinstance(weather_data, dict):
             outfits = recommend_outfit(weather_data)
             talk(f"Based on the weather in {CITY}, I recommend the following outfit:")
-            for outfit in outfits:
-                talk(outfit)
+            talk(outfits)
         else:
             talk("I'm unable to retrieve the weather data right now, so I can't recommend an outfit.")
 

@@ -72,6 +72,10 @@ def recommend_outfit(weather):
         outfit.append("sunglasses to reduce glare and protect your eyes")
         outfit.append("a face mask or scarf to protect your respiratory system from dust")
 
+    if "overcast" in condition:
+        outfit.append("Wear a light jacket or sweater with a long-sleeve shirt and comfortable jeans or trousers.")
+        outfit.append("Add sneakers, a scarf or hoodie for extra warmth, and sunglasses to protect from indirect sunlight.")
+
     if wind_speed > 15:
         outfit.append("a wind-resistant jacket")
 
