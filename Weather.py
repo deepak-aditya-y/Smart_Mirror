@@ -43,44 +43,45 @@ def recommend_outfit(weather):
     outfit = []
 
     if temp > 25:
-        outfit.append("Light clothing, such as t-shirts and shorts")
-        outfit.append("Sunglasses and a hat")
+        outfit.append("light clothing such as t-shirts and shorts")
+        outfit.append("sunglasses and a hat")
         if "rain" in condition:
-            outfit.append("Carry a light raincoat or umbrella")
+            outfit.append("a light raincoat or umbrella")
     elif 15 < temp <= 25:
-        outfit.append("Moderate clothing, such as jeans and a light jacket")
+        outfit.append("moderate clothing such as jeans and a light jacket")
         if "cloud" in condition or wind_speed > 10:
-            outfit.append("A windbreaker or light sweater")
+            outfit.append("a windbreaker or light sweater")
     elif 5 < temp <= 15:
-        outfit.append("Warm clothing, like sweaters or hoodies")
+        outfit.append("warm clothing like sweaters or hoodies")
         if "rain" in condition:
-            outfit.append("A waterproof jacket and boots")
+            outfit.append("a waterproof jacket and boots")
     else:
-        outfit.append("Heavy winter clothing, such as coats, gloves, and scarves")
+        outfit.append("heavy winter clothing such as coats, gloves, and scarves")
         if "snow" in condition:
-            outfit.append("Wear insulated and waterproof gear, including snow boots")
+            outfit.append("insulated and waterproof gear including snow boots")
 
     # Specific recommendations for misty weather
     if "mist" in condition:
-        outfit.append("Wear layers to stay warm in the damp air")
-        outfit.append("Use a scarf to protect against the chill")
-        outfit.append("Consider reflective or bright clothing for low visibility")
+        outfit.append("layers to stay warm in the damp air")
+        outfit.append("a scarf to protect against the chill")
+        outfit.append("reflective or bright clothing for low visibility")
 
     if "haze" in condition:
-        outfit.append("Wear light, long-sleeve clothing to protect your skin from dust particles.")
-        outfit.append("Opt for breathable fabrics to stay comfortable in the humid air.")
-        outfit.append("Consider wearing sunglasses to reduce glare and protect your eyes from haze.")
-        outfit.append("A face mask or scarf can be helpful to protect your respiratory system from dust.")
+        outfit.append("light, long-sleeve clothing to protect your skin from dust particles")
+        outfit.append("breathable fabrics to stay comfortable in the humid air")
+        outfit.append("sunglasses to reduce glare and protect your eyes")
+        outfit.append("a face mask or scarf to protect your respiratory system from dust")
 
     if wind_speed > 15:
-        outfit.append("Add a wind-resistant jacket")
+        outfit.append("a wind-resistant jacket")
 
-    return outfit
+    # Join outfit items into a sentence
+    return " and ".join(outfit) + "."
 
 # Main block
 if __name__ == "__main__":
     # Read the API key
-    API_KEY = read_api_key('Security/APIKey.txt')
+    API_KEY = read_api_key('Security/Weater_API_Key.txt')
 
     # Get city input from user
     city = input("Enter the city name: ").strip()
@@ -90,8 +91,7 @@ if __name__ == "__main__":
     if isinstance(weather_data, dict):
         display_weather_info(city, weather_data)
         print("\nRecommended Outfit:")
-        outfits = recommend_outfit(weather_data)
-        for item in outfits:
-            print(f"- {item}")
+        outfit = recommend_outfit(weather_data)
+        print(f"{outfit}")
     else:
         print(weather_data)

@@ -88,4 +88,3 @@ def emotion_detection():
     cv2.destroyAllWindows()
 
 # Call the emotion_detection function when needed, e.g., via a button press or command.
-emotion_detection()
